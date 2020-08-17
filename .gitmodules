@@ -1,0 +1,12 @@
+[submodule "pybind11"]
+	path = third_party/pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "kenlm"]
+	path = third_party/kenlm
+	url = https://github.com/kpu/kenlm.git
+[submodule "sentencepiece"]
+	path = third_party/sentencepiece
+	url = https://github.com/google/sentencepiece
+[submodule "third_party/ThreadPool"]
+	path = third_party/ThreadPool
+	url = https://github.com/progschj/ThreadPool.git
