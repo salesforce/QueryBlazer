@@ -19,7 +19,18 @@ QueryBlazer performs significantly better than conventional QAC methods in terms
 - Generative model, being able to complete _unseen_ queries
 - Easy to use
 
-## Prerequisite
+## Setup
+### Option 1: Building a Docker Image
+
+We provide `Dockerfile` that performs prerequisite & installation steps below to get you started quickly.
+Please use a clean repository to build the docker image.
+
+```bash script
+git clone THIS_REPOSITORY && cd QueryBlazer
+docker build . -t queryblazer
+```
+
+### Option 2: Manual Installation
 
 Currently, QueryBlazer supports only *nix platforms.
 Tested on Ubuntu & macOS.
@@ -47,7 +58,6 @@ cd ../..
 cd ..
 ```
 
-## Installation
 We will build some executable files as well as Python-binding library file.
 
 ```bash script
@@ -61,16 +71,6 @@ mkdir build && cd build
 cmake .. -DCMAKE_CXX_FLAGS=-O2
 make -j4
 cd ..
-```
-
-## Building a Docker Image
-
-We provide `Dockerfile` that performs prerequisite & installation steps above to get you started quickly.
-Please use a clean repository to build the docker image.
-
-```bash script
-git clone THIS_REPOSITORY && cd QueryBlazer
-docker build . -t queryblazer
 ```
 
 ## Quick Start
