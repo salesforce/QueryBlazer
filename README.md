@@ -76,7 +76,7 @@ cd ..
 ## Quick Start
 Let's assume we have a train query dataset `train.txt`.
 Each line in the file should be a single query.
-If you don't have query dataset, AOL query [logs](https://jeffhuang.com/search_query_logs.html) may be a good starting point.
+See [experiments](experiments) for preparing dataset used in the paper.
 
 Note that QueryBlazer is case sensitive, 
 so if you want case-insensitive QAC, 
