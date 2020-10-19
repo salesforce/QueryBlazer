@@ -32,6 +32,9 @@ target_link_libraries(qbz_test_candidates QBZ_LIB)
 pybind11_add_module(queryblazer src/queryblazer.h src/queryblazer.cc)
 target_link_libraries(queryblazer PRIVATE QBZ_LIB)
 
+add_executable(qbz_build_queryblazer src/build_queryblazer.cc)
+target_link_libraries(qbz_build_queryblazer QBZ_LIB)
+
 add_executable(qbz_test_queryblazer src/test_queryblazer.cc)
 target_link_libraries(qbz_test_queryblazer QBZ_LIB)
 

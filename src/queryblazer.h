@@ -146,7 +146,10 @@ class QueryBlazer {
      * Save beam search results into a serialized file
      */
     bool SavePrecomputed(const std::string &output_file) {
-        if (!config.precompute) return false;
+        if (!config.precompute) {
+            std::cerr << "Config's precompute flag is false" << std::endl;
+            return false;
+        }
 
         std::ofstream ofs{output_file};
         QBZ_ASSERT(ofs, "Error opening " + output_file);
