@@ -10,6 +10,8 @@
 import sys
 import argparse
 import random
+import io
+
 
 """
 read queries from stdin corresponding each line
@@ -26,7 +28,7 @@ def main():
     args = parser.parse_args()
     random.seed(args.seed)
 
-    with sys.stdin as f:
+    with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8') as f:
         for query in f:
             query = query.strip()
             n = len(query)

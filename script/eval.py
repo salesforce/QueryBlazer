@@ -20,7 +20,7 @@ def main():
     args = parser.parse_args()
 
     if args.seen:
-        with open(args.seen, 'r') as f:
+        with open(args.seen, 'r', encoding='utf-8') as f:
             seen = set([l.strip() for l in f])
     else:
         seen = set()
@@ -28,8 +28,8 @@ def main():
     ranks = []
     seen_ranks = []
     unseen_ranks = []
-    with open(args.query, 'r') as q, \
-        open(args.completions, 'r') as c:
+    with open(args.query, 'r', encoding='utf-8') as q, \
+        open(args.completions, 'r', encoding='utf-8') as c:
         for qline, cline in zip(q,c):
             query = qline.strip()
             completions = cline.strip().split('\t')
