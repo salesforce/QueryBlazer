@@ -11,6 +11,8 @@ import sys
 import argparse
 import random
 import math
+import io
+
 
 """
 Split a file into train, valid, and test
@@ -36,10 +38,11 @@ def main():
     random.seed(args.seed)
 
     queries = []
-    with sys.stdin as f:
+    with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8') as f:
         for line in f:
             query = line.rstrip()
             if len(query) == 0: continue
+            query = bytes(query, 'utf-8').decode('utf-8', 'ignore')
             queries.append(query)
 
     random.shuffle(queries)
