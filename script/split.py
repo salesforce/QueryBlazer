@@ -32,7 +32,7 @@ def main():
     assert args.valid + args.test < 1
 
     train_file = args.output_prefix + '_train.txt'
-    valid_file = args.output_prefix + '_val.txt'
+    valid_file = args.output_prefix + '_valid.txt'
     test_file = args.output_prefix + '_test.txt'
 
     random.seed(args.seed)
