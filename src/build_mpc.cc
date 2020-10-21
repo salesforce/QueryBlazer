@@ -88,12 +88,11 @@ int main(int argc, const char** argv) {
     std::vector<std::string> queries;
     std::vector<size_t> counts;
     std::tie(queries, counts) = CountQueries(argv[1]);
-    std::vector<Utf8> utf8_querifes;
-    utf8_querifes.reserve(queries.size());
-    for (const auto &query : queries)
-        utf8_querifes.push_back(ToUtf8(query));
+    std::vector<Utf8> utf8_queries;
+    utf8_queries.reserve(queries.size());
+    for (const auto &query : queries) utf8_queries.push_back(ToUtf8(query));
 
-    auto vocab = ExtractCharacters(utf8_querifes.begin(), utf8_querifes.end());
+    auto vocab = ExtractCharacters(utf8_queries.begin(), utf8_queries.end());
 
     // create FST
     auto p_trie = new fst::StdVectorFst;
@@ -112,9 +111,9 @@ int main(int argc, const char** argv) {
     {
         Trie<int> mpc;
         std::cerr << "Building a prefixtree..." << std::endl;
-        for (auto i = 0; i < utf8_querifes.size(); ++i) {
+        for (auto i = 0; i < utf8_queries.size(); ++i) {
             std::vector<int> ilabels;
-            const auto &query = utf8_querifes.at(i);
+            const auto &query = utf8_queries.at(i);
             ilabels.reserve(query.size());
             for (auto c : query)
                 ilabels.push_back(symtable->Find(ToString({c})));
