@@ -52,26 +52,27 @@ CountQueries(const std::string &file) {
 }
 
 std::pair<std::vector<std::string>, std::vector<size_t>>
-CopyToFst(const Trie<int> &mpc, fst::StdVectorFst &trie) {
+CopyToFst(const Trie<int> &trie, fst::StdVectorFst &vec_fst) {
     std::vector<size_t> counts{0}; // start state
     std::vector<std::string> queries(1); // queries at each state if final
+    // prefix node, state idx
     std::queue<std::pair<const PrefixNode<int, Trie<int>::Data>*, int>> queue;
-    queue.emplace(&mpc.Root(), trie.Start());
+    queue.emplace(&trie.Root(), vec_fst.Start());
     while (!queue.empty()) {
         const auto &pair = queue.front();
         for (auto child : pair.first->Children()) {
-            auto nextstate = trie.AddState();
+            auto nextstate = vec_fst.AddState();
             counts.push_back(0);
             queries.emplace_back("");
-            trie.AddArc(pair.second, fst::StdArc(child.first, child.first, nextstate));
+            vec_fst.AddArc(pair.second, fst::StdArc(child.first, child.first, nextstate));
             queue.emplace(child.second, nextstate);
         }
 
         if (pair.first->Data()) {
-            trie.SetFinal(pair.second);
+            vec_fst.SetFinal(pair.second);
             counts.at(pair.second) = pair.first->Data()->count;
             for (auto ilabel : pair.first->Prefix()) {
-                queries.at(pair.second) += trie.InputSymbols()->Find(ilabel);
+                queries.at(pair.second) += vec_fst.InputSymbols()->Find(ilabel);
             }
         }
 
@@ -95,9 +96,9 @@ int main(int argc, const char** argv) {
     auto vocab = ExtractCharacters(utf8_queries.begin(), utf8_queries.end());
 
     // create FST
-    auto p_trie = new fst::StdVectorFst;
-    fst::StdVectorFst &trie = *p_trie;
-    trie.SetStart(trie.AddState());
+    auto p_vec_fst = new fst::StdVectorFst;
+    fst::StdVectorFst &vec_fst = *p_vec_fst;
+    vec_fst.SetStart(vec_fst.AddState());
     auto symtable = new fst::SymbolTable;
     for (const auto &symbol : DEFAULT_SYMBOLS)
         symtable->AddSymbol(symbol);
@@ -105,32 +106,33 @@ int main(int argc, const char** argv) {
     for (auto c : vocab)
         symtable->AddSymbol(ToString({c}));
 
-    trie.SetInputSymbols(symtable);
-    trie.SetOutputSymbols(symtable);
+    vec_fst.SetInputSymbols(symtable);
+    vec_fst.SetOutputSymbols(symtable);
 
     {
-        Trie<int> mpc;
+        Trie<int> trie;
         std::cerr << "Building a prefixtree..." << std::endl;
+        std::vector<int> ilabels;
         for (auto i = 0; i < utf8_queries.size(); ++i) {
-            std::vector<int> ilabels;
             const auto &query = utf8_queries.at(i);
+            ilabels.clear();
             ilabels.reserve(query.size());
             for (auto c : query)
                 ilabels.push_back(symtable->Find(ToString({c})));
-            mpc.Insert(ilabels, counts.at(i));
+            trie.Insert(ilabels, counts.at(i));
         }
 
         std::cerr << "Copying to an FST" << std::endl;
         // count per FST state
-        std::tie(queries, counts) = CopyToFst(mpc, trie);
+        std::tie(queries, counts) = CopyToFst(trie, vec_fst);
     }
 
     std::cerr << "Converting to ConstFST" << std::endl;
     {
-        fst::StdConstFst const_trie{trie};
-        const_trie.Write(argv[2]);
+        fst::StdConstFst const_fst{vec_fst};
+        const_fst.Write(argv[2]);
     }
-    delete p_trie;
+    delete p_vec_fst;
 
     std::cerr << "Precomputing topk completions" << std::endl;
     Mpc completions(argv[2], std::move(queries), std::move(counts));
