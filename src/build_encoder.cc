@@ -132,7 +132,7 @@ int main(int argc, const char **argv) {
     auto vocabulary = ReadVocabulary(argv[1]);
 
     auto isymtable = new fst::SymbolTable;
-    for (const auto &symbol : {SYMBOL_EPSILON, SYMBOL_PHI, SYMBOL_BOS, SYMBOL_EOS, SYMBOL_UNK})
+    for (const auto &symbol : DEFAULT_SYMBOLS)
         isymtable->AddSymbol(symbol);
     auto osymtable = isymtable->Copy();
 

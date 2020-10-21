@@ -44,6 +44,10 @@ constexpr int IDX_BOS = 2;
 constexpr int IDX_EOS = 3;
 constexpr int IDX_UNK = 4;
 
+// Every symbol table must begin with these symbols in this order
+constexpr char const *DEFAULT_SYMBOLS[] = {SYMBOL_EPSILON, SYMBOL_PHI,
+                                           SYMBOL_BOS, SYMBOL_EOS, SYMBOL_UNK};
+
 // String operations
 template <typename UnaryPredicate>
 std::vector<std::string> Split(const std::string &input, UnaryPredicate pred) {

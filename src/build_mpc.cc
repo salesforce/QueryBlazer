@@ -99,7 +99,7 @@ int main(int argc, const char** argv) {
     fst::StdVectorFst &trie = *p_trie;
     trie.SetStart(trie.AddState());
     auto symtable = new fst::SymbolTable;
-    for (const auto &symbol : {SYMBOL_EPSILON, SYMBOL_PHI, SYMBOL_BOS, SYMBOL_EOS, SYMBOL_UNK})
+    for (const auto &symbol : DEFAULT_SYMBOLS)
         symtable->AddSymbol(symbol);
 
     for (auto c : vocab)
@@ -128,9 +128,9 @@ int main(int argc, const char** argv) {
     std::cerr << "Converting to ConstFST" << std::endl;
     {
         fst::StdConstFst const_trie{trie};
-        delete p_trie;
         const_trie.Write(argv[2]);
     }
+    delete p_trie;
 
     std::cerr << "Precomputing topk completions" << std::endl;
     Mpc completions(argv[2], std::move(queries), std::move(counts));
