@@ -1,25 +1,26 @@
 set -e
 
 # INPUT
-LOG_FILE=train.txt
+LOG_FILE=orcas_train.txt
 
 # OUTPUT FILES; will overwrite
-LOG_ENCODED=train.enc
-SPM_PREFIX=subword # $SPM_PREFIX.{m, vocab}
-ENCODER=encoder.fst
-LANGUAGE_MODEL=ngram # $LANGUAGE_MODEL.{arpa, fst}
-PRECOMPUTED=precomputed.bin
+OUTPUT_DIR=data/orcas/char
+LOG_ENCODED=$OUTPUT_DIR/train.enc
+SPM_PREFIX=$OUTPUT_DIR/subword # $SPM_PREFIX.{m, vocab}
+ENCODER=$OUTPUT_DIR/encoder.fst
+LANGUAGE_MODEL=$OUTPUT_DIR/ngram # $LANGUAGE_MODEL.{arpa, fst}
+PRECOMPUTED=$OUTPUT_DIR/precomputed.bin
 
 # CONFIG
-SPM_MODEL=bpe # char, bpe, unigram
+SPM_MODEL=char # char, bpe, unigram
 SPM_VOCAB_SIZE=4096
 SPM_CHARACTER_COVERAGE=0.9995
-LM_ORDER=5
-LM_PRUNE="--prune 1 11 21 31 41"
+LM_ORDER=8
+LM_PRUNE="--prune 0 1 1 2 2 3 3 4"
 
 
 echo "extracting subwords..."
-third_party/sentencepiece/build/src/spm_train --model_type $SPM_MODEL --model_prefix $SPM_PREFIX --input $LOG_FILE --vocab_size $SPM_VOCAB_SIZE --character_coverage $SPM_CHARACTER_COVERAGE
+third_party/sentencepiece/build/src/spm_train --vocab_size $SPM_VOCAB_SIZE --model_type $SPM_MODEL --model_prefix $SPM_PREFIX --input $LOG_FILE --character_coverage $SPM_CHARACTER_COVERAGE
 
 echo "building encoder..."
 cut -f 1 $SPM_PREFIX.vocab | build/qbz_build_encoder /dev/stdin $ENCODER
