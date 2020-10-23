@@ -18,8 +18,8 @@ from `data/aol/full/` directory as the train and test sets.
 wget https://msmarco.blob.core.windows.net/msmarcoranking/orcas.tsv.gz
 gunzip orcas.tsv.gz
 
-# extract queries and split into train, valid, and test
-cut -f2 -d$'\t' orcas.tsv | python ../script/split.py --output_prefix orcas
+# extract queries, normalize, and split into train, valid, and test
+cut -f2 -d$'\t' orcas.tsv | python ../script/normalize.py | python ../script/split.py --output_prefix orcas
 ```
 
 Use `orcas_train.txt` and `orcas_test.txt` files as the train and test files.
