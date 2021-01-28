@@ -2,7 +2,10 @@
 
 This is an official repository of QueryBlazer released in conjunction with the publication below.
 ```
-Young Mo Kang, Wenhao Liu, and Yingbo Zhou, "QueryBlazer: Efficient Query Autocompletion Framework"
+Young Mo Kang, Wenhao Liu, and Yingbo Zhou. 2021. 
+QueryBlazer: Efficient Query Autocompletion Framework. 
+In Proceedings of the Fourteenth ACM International Conference on Web Search and Data Mining (WSDM ’21), March 8–12, 2021, Virtual Event, Israel. ACM, New York, NY, USA, 9 pages. 
+https://doi.org/10.1145/3437963.3441725
 ```
 **This is not an official Salesforce's product.**
 
