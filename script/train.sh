@@ -1,7 +1,7 @@
 set -e
 
 # INPUT
-LOG_FILE=orcas_train.txt
+LOG_FILE=train.txt
 
 # OUTPUT FILES; will overwrite
 OUTPUT_DIR=data/orcas/bpe/4096
@@ -15,8 +15,8 @@ PRECOMPUTED=$OUTPUT_DIR/precomputed.bin
 SPM_MODEL=bpe # char, bpe, unigram
 SPM_VOCAB_SIZE=4096
 SPM_CHARACTER_COVERAGE=0.9995
-LM_ORDER=5
-LM_PRUNE=""
+LM_ORDER=8
+LM_PRUNE="--prune 0 1 1 2 2 3 3 4"
 
 
 echo "extracting subwords..."
