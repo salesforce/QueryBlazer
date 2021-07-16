@@ -8,7 +8,7 @@
 '''
 
 import argparse
-import numpy as np
+from statistics import mean
 
 def main():
     parser = argparse.ArgumentParser()
@@ -29,7 +29,7 @@ def main():
     seen_ranks = []
     unseen_ranks = []
     with open(args.query, 'r', encoding='utf-8') as q, \
-        open(args.completions, 'r', encoding='utf-8') as c:
+            open(args.completions, 'r', encoding='utf-8') as c:
         for qline, cline in zip(q,c):
             query = qline.strip()
             completions = cline.strip().split('\t')
@@ -44,14 +44,11 @@ def main():
 
 
     mrr_scores = [0.] + [1.0/x for x in range(1,args.topk + 1)]
-    mrr_scores = np.asarray(mrr_scores)
     sr_scores = [0.] + [1.0] * args.topk
-    sr_scores = np.asarray(sr_scores)
-    ranks = np.asarray(ranks)
 
     for rank,dtype in zip([seen_ranks, unseen_ranks, ranks], ["seen", "unseen", "total"]):
-        mrr = np.mean([mrr_scores[i] for i in rank])
-        sr = np.mean([sr_scores[i] for i in rank])
+        mrr = mean([mrr_scores[i] for i in rank])
+        sr = mean([sr_scores[i] for i in rank])
         print('# %s queries: %d' % (dtype, len(rank)))
         print('MRR: %0.4f' % mrr)
         print('Success Rate: %0.4f' % sr)
